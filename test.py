@@ -8,7 +8,7 @@ from grpc.experimental import aio
 import helloworld_pb2
 import helloworld_pb2_grpc
 
-REQUEST_COUNT = 100
+REQUEST_COUNT = 10
 THREAD_COUNT = 10
 
 
@@ -36,16 +36,6 @@ def test_sync_client_to_sync_server(benchmark):
         with concurrent.futures.ThreadPoolExecutor() as executor:
             for key in range(0, THREAD_COUNT):
                 executor.submit(client_sync, "server")
-
-    benchmark(run)
-
-
-def test_sync_client_to_async_server(benchmark):
-    def run():
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            for key in range(0, THREAD_COUNT):
-                executor.submit(client_sync, "async_server")
-        client_sync("async_server")
 
     benchmark(run)
 
