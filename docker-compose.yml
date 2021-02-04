@@ -1,0 +1,47 @@
+version: "3.8"
+services:
+  server:
+    build:
+      context: .
+    command: python greeter_server.py run-sync
+    volumes:
+    - .:/app
+
+  async_server:
+    build:
+      context: .
+    command: python greeter_server.py run-async
+    volumes:
+    - .:/app
+
+  client:
+    build:
+      context: .
+    command: tail -f /dev/null
+    environment:
+      SERVER: server
+    volumes:
+    - .:/app
+    links:
+      - server
+
+  async_client:
+    build:
+      context: .
+    command: tail -f /dev/null
+    environment:
+      SERVER: async_server
+    volumes:
+    - .:/app
+    links:
+      - async_server
+
+  benchmark:
+    build:
+      context: .
+    command: pytest test.py
+    volumes:
+    - .:/app
+    links:
+      - server
+      - async_server
