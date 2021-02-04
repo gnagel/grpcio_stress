@@ -1,3 +1,5 @@
+import asyncio
+
 import grpc
 from grpc import aio
 from grpc.experimental import aio
@@ -42,13 +44,13 @@ def test_sync_client_to_async_server(benchmark):
 
 def test_async_client_to_sync_server(benchmark):
     def run():
-        client_async("server")
+        asyncio.run(client_async("server"))
 
     benchmark(run)
 
 
 def test_async_client_to_async_server(benchmark):
     def run():
-        client_async("server")
+        asyncio.run(client_async("async_server"))
 
     benchmark(run)

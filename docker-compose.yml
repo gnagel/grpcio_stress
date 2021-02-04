@@ -39,7 +39,7 @@ services:
   benchmark:
     build:
       context: .
-    command: pytest test.py --benchmark-min-time=1m
+    command: pytest -v test.py --benchmark-min-time=1 --benchmark-max-time=60
     volumes:
     - .:/app
     links:
