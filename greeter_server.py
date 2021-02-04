@@ -1,17 +1,27 @@
 import asyncio
+import time
 from concurrent import futures
 
 import click
 import grpc
+from aioify import aioify
 from grpc import aio
 
 import helloworld_pb2
 import helloworld_pb2_grpc
 
+DELAY_TIME = 0.1
+
+@aioify
+def sleep_async(delay):
+    time.sleep(delay)
+    return 'I slept asynchronously'
+
 
 async def serve_async():
     class Greeter(helloworld_pb2_grpc.GreeterServicer):
         async def SayHello(self, request, context):
+            await sleep_async(DELAY_TIME)
             return helloworld_pb2.HelloReply(message='Hello, %s!' % request.name)
 
     server = aio.server()
@@ -25,6 +35,7 @@ def serve_sync():
     class Greeter(helloworld_pb2_grpc.GreeterServicer):
 
         def SayHello(self, request, context):
+            time.sleep(DELAY_TIME)
             return helloworld_pb2.HelloReply(message='Hello, %s!' % request.name)
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

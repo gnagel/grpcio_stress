@@ -5,14 +5,14 @@ services:
       context: .
     command: python greeter_server.py run-sync
     volumes:
-    - .:/app
+      - .:/app
 
   async_server:
     build:
       context: .
     command: python greeter_server.py run-async
     volumes:
-    - .:/app
+      - .:/app
 
   client:
     build:
@@ -21,7 +21,7 @@ services:
     environment:
       SERVER: server
     volumes:
-    - .:/app
+      - .:/app
     links:
       - server
 
@@ -32,16 +32,17 @@ services:
     environment:
       SERVER: async_server
     volumes:
-    - .:/app
+      - .:/app
     links:
       - async_server
 
   benchmark:
     build:
       context: .
-    command: pytest -v test.py --benchmark-min-time=1 --benchmark-max-time=60
+    command: tail -f /dev/null
+    #    command: pytest -v test.py --benchmark-min-time=1 --benchmark-max-time=60
     volumes:
-    - .:/app
+      - .:/app
     links:
       - server
       - async_server
