@@ -40,6 +40,16 @@ def test_sync_client_to_sync_server(benchmark):
     benchmark(run)
 
 
+# def test_sync_client_to_async_server(benchmark):
+#     def run():
+#         with concurrent.futures.ThreadPoolExecutor() as executor:
+#             for key in range(0, THREAD_COUNT):
+#                 executor.submit(client_sync, "async_server")
+#         client_sync("async_server")
+#
+#     benchmark(run)
+
+
 def test_async_client_to_sync_server(benchmark):
     def run():
         async def main():
